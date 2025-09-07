@@ -310,8 +310,18 @@
         // Toggle dropdown submenu on mobile
         dropdown.addEventListener('click', (e) => {
             if(window.innerWidth <= 900) {
-                e.preventDefault();
-                dropdown.classList.toggle('open');
+                // Allow link navigation only if clicking on submenu links, not the parent menu
+                if(e.target.tagName.toLowerCase() === 'a' && e.target.parentElement.classList.contains('dropdown')) {
+                    // Prevent toggle if clicking parent menu link
+                    e.preventDefault();
+                    dropdown.classList.toggle('open');
+                } else if(e.target.tagName.toLowerCase() === 'a' && e.target.parentElement.parentElement.classList.contains('dropdown-menu')) {
+                    // Allow navigation for submenu links
+                    // Do nothing special, let link work normally
+                } else {
+                    e.preventDefault();
+                    dropdown.classList.toggle('open');
+                }
             }
         });
         // Accessibility: allow keyboard toggle for dropdown
