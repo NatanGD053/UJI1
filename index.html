@@ -342,6 +342,9 @@
                 }
             }
         });
+        // Remove any duplicate dropdown menus that might cause centered text
+        const duplicateDropdowns = document.querySelectorAll('.dropdown-menu.duplicate');
+        duplicateDropdowns.forEach(dd => dd.remove());
         // Accessibility: allow keyboard toggle for dropdown
         dropdown.addEventListener('keydown', (e) => {
             if(e.key === 'Enter' || e.key === ' ') {
