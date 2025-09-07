@@ -109,9 +109,8 @@
             background: #e0e7ff;
             color: #007bff;
         }
-        .dropdown:hover .dropdown-menu,
-        .dropdown:focus-within .dropdown-menu {
-            display: none;
+        .dropdown.open > .dropdown-menu {
+            display: block;
         }
         /* Hamburger menu */
         .hamburger {
@@ -330,6 +329,13 @@
                     if (dropdown.classList.contains('open')) {
                         dropdown.classList.remove('open');
                     } else {
+                        // Close any other open dropdowns first
+                        const openDropdowns = document.querySelectorAll('.dropdown.open');
+                        openDropdowns.forEach(d => {
+                            if (d !== dropdown) {
+                                d.classList.remove('open');
+                            }
+                        });
                         dropdown.classList.add('open');
                     }
                 }
