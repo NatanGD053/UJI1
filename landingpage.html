@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Beranda - SEISMA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #003366 0%, #4f8cff 60%, #ffcc00 100%);
+            margin: 0;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1);
+        }
+        body.page-loaded {
+            opacity: 1;
+        }
+        .navbar { width: 100%; background: #003366; color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 32px; position: fixed; top: 0; left: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 64px; }
+        .navbar .logo { display: flex; align-items: center; }
+        .navbar .logo img { height: 38px; margin-right: 12px; }
+        .navbar .logo span { font-size: 20px; font-weight: bold; letter-spacing: 1px; }
+        .navbar ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
+        .navbar li { margin: 0 18px; position: relative; display: flex; align-items: center; }
+        .navbar a { color: white; text-decoration: none; font-weight: bold; font-size: 16px; transition: color 0.2s; }
+        .navbar a:hover { color: #ffcc00; }
+        .main-content { margin-top: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; }
+        .main-content-flex {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 36px;
+        }
+        .kajian-kiri {
+            flex: 2;
+            min-width: 0;
+            max-width: 540px;
+        }
+        .bidang-geodesi {
+            margin-top: 24px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            padding: 32px 24px;
+            max-width: 100%;
+        }
+        .gambar-kanan {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: flex-start;
+            margin-top: 0;
+            min-width: 220px;
+        }
+        .gambar-kanan img {
+            width: 220px;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            object-fit: cover;
+        }
+        @media (max-width: 1000px) {
+            .main-content-flex { flex-direction: column; align-items: center; }
+            .gambar-kanan { flex-direction: row; flex-wrap: wrap; gap: 12px; margin-top: 0; }
+            .gambar-kanan img { width: 120px; }
+        }
+        @media (max-width: 700px) {
+            .main-content-flex { flex-direction: column; }
+            .kajian-kiri, .gambar-kanan { width: 100%; }
+            .gambar-kanan { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .gambar-kanan img { width: 90px; }
+        }
+        .bidang-geodesi { margin-top: 36px; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); padding: 32px 24px; max-width: 800px; }
+        .bidang-geodesi h2 { color: #003366; margin-bottom: 18px; text-align: center; }
+        .subsection { margin-bottom: 22px; }
+        .subsection h3 { color: #007bff; margin-bottom: 6px; }
+        .subsection p { color: #333; font-size: 1.08rem; margin: 0; }
+        footer { margin-top: 48px; background: #003366; color: #fff; text-align: center; padding: 18px 0 12px 0; font-size: 15px; letter-spacing: 0.5px; box-shadow: 0 -2px 8px rgba(0,0,0,0.04); }
+        /* Hamburger menu */
+        .hamburger {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 3px;
+            background: white;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 48px;
+            left: 0;
+            background: #fff;
+            min-width: 210px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+            border-radius: 8px;
+            padding: 10px 0;
+            z-index: 200;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            color: #003366;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dropdown-menu a:hover {
+            background: #e0e7ff;
+            color: #007bff;
+        }
+        p, li, .justify {
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="Logo_aksang.png" alt="Logo Dharaseva 25" />
+            <span>Dharaseva 25</span>
+        </div>
+        <ul>
+            <li style="display: flex; align-items: center; position: relative;">
+                <div class="hamburger" id="menuUtamaBtn" title="Menu Utama Dharaseva 25">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="dropdown-menu" id="menuUtamaDropdown">
+                    <a href="#tpb">TPB</a>
+                    <a href="#akademik">Akademik Semester 3</a>
+                    <a href="#dokumentasi">Dokumentasi Acara</a>
+                    <a href="#dpa">DPA</a>
+                    <a href="#beasiswa">Beasiswa</a>
+                    <a href="#organisasi">Organisasi Mahasiswa</a>
+                    <a href="#event">Event Kampus</a>
+                </div>
+                <a href="index.html" style="margin-left:16px; font-weight:bold;">Home</a>
+            </li>
+            <li><a href="landingpage.html">Landingpage</a></li>
+            <li><a href="timeline.html">Timeline</a></li>
+            <li><a href="organogram.html">Organogram</a></li>
+            <li><a href="galeridokumentasi.html">Galeri Dokumentasi</a></li>
+            <li><a href="luaran.html">Luaran</a></li>
+            <li><a href="penghargaan.html">Penghargaan</a></li>
+            <li><a href="multikampus.html">Multikampus</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+        </ul>
+    </nav>
+    <div class="main-content">
+        <div class="main-content-flex">
+            <div class="kajian-kiri">
+                <h1>Beranda</h1>
+                <p>Selamat datang di halaman Beranda SEISMA. Temukan informasi terbaru, pengumuman, dan highlight kegiatan kampus di sini!</p>
+                <section class="bidang-geodesi">
+                    <h2>Kajian Teknik Geodesi dan Geomatika ITB</h2>
+                    <div class="subsection">
+                        <h3>Pengantar</h3>
+                        <p>Teknik Geodesi dan Geomatika ITB adalah bidang ilmu yang mempelajari pengukuran, pemetaan, dan analisis data spasial permukaan bumi. Keilmuan ini sangat penting untuk pembangunan infrastruktur, mitigasi bencana, pengelolaan sumber daya alam, dan berbagai aplikasi teknologi geospasial modern.</p>
+                    </div>
+                    <div class="subsection">
+                        <h3>Sejarah Singkat</h3>
+                        <p>Program Studi Teknik Geodesi dan Geomatika ITB merupakan pelopor pendidikan tinggi geodesi di Indonesia, didirikan sejak 1949. Awalnya bagian dari Fakultas Teknik Universitas Indonesia di Bandung, lalu menjadi bagian ITB. Nama "Geodesi dan Geomatika" resmi digunakan sejak tahun 2000 untuk mengakomodasi kemajuan teknologi informasi dan komunikasi.</p>
+                    </div>
+                    <div class="subsection">
+                        <h3>Visi, Misi, dan Tujuan</h3>
+                        <ul>
+                            <li><b>Visi:</b> Menjadi pemimpin, pusat pendidikan dan teknologi tinggi yang unggul dan bermartabat dalam survei, pemetaan, dan ilmu informasi geografis.</li>
+                            <li><b>Misi:</b> Melaksanakan pendidikan tinggi inovatif dan unggul berbasis penelitian, berorientasi pada perubahan lingkungan dan aktivitas manusia untuk mendukung pembangunan nasional.</li>
+                            <li><b>Tujuan:</b> Menghasilkan lulusan yang kompeten, adaptif, mampu memecahkan masalah, beretika, dan siap bersaing secara global.</li>
+                        </ul>
+                    </div>
+                    <div class="subsection">
+                        <h3>Pilar Utama Keilmuan Geodesi</h3>
+                        <ol>
+                            <li><b>Geokinematika:</b> Studi tentang bentuk dan perubahan permukaan bumi, pergerakan lempeng, aktivitas vulkanik, gempa, dan perubahan muka laut menggunakan teknologi seperti GNSS, InSAR, dan altimetri.</li>
+                            <li><b>Medan Gravitasi:</b> Studi tentang distribusi gaya berat bumi, penentuan geoid, pemantauan deformasi, eksplorasi sumber daya alam, dan pemodelan global menggunakan data gravimetri dan satelit.</li>
+                            <li><b>Rotasi Bumi:</b> Studi tentang perputaran bumi, pengaruhnya terhadap sistem koordinat, waktu, dan aplikasi dalam GNSS serta pemantauan dinamika bumi.</li>
+                        </ol>
+                    </div>
+                    <div class="subsection">
+                        <h3>Kelompok Keahlian di Teknik Geodesi dan Geomatika ITB</h3>
+                        <ul>
+                            <li><b>Sistem Spasial dan Kadaster:</b> Pengelolaan data pertanahan, pendaftaran tanah, pemetaan 3D, dan pengembangan kadaster digital.</li>
+                            <li><b>Hidrografi:</b> Pemetaan wilayah perairan, survei batimetri, dan pengembangan teknologi kelautan.</li>
+                            <li><b>Sains dan Teknologi Informasi Geografis:</b> Sistem informasi geografis (SIG), penginderaan jauh, pemodelan dan analisis data spasial.</li>
+                            <li><b>Sains, Rekayasa, dan Inovasi Geodesi:</b> Pengembangan teknologi pengamatan bumi, pemodelan geoid, monitoring deformasi, dan inovasi berbasis AI.</li>
+                        </ul>
+                    </div>
+                    <div class="subsection">
+                        <h3>Peran dan Manfaat di Masyarakat</h3>
+                        <ul>
+                            <li>Pembangunan infrastruktur dan tata ruang</li>
+                            <li>Mitigasi bencana dan monitoring lingkungan</li>
+                            <li>Navigasi dan transportasi modern</li>
+                            <li>Administrasi pertanahan dan reforma agraria</li>
+                            <li>Pengelolaan sumber daya air dan lingkungan</li>
+                        </ul>
+                        <p>Teknik Geodesi dan Geomatika berperan penting dalam mendukung pembangunan nasional yang berkelanjutan dan berkeadilan melalui pemanfaatan teknologi geospasial terkini.</p>
+                    </div>
+                </section>
+            </div>
+            <div class="gambar-kanan">
+                <img src="gambar5.jpg" alt="Gambar 5" />
+                <img src="gambar1.jpg" alt="Gambar 1" />
+                <img src="gambar2.jpg" alt="Gambar 2" />
+                <img src="gambar3.jpg" alt="Gambar 3" />
+                <img src="gambar4.jpg" alt="Gambar 4" />
+                <img src="gambar6.jpg" alt="Gambar 6" />
+                <img src="gambar7.jpg" alt="Gambar 7" />
+                <img src="gambar8.jpg" alt="Gambar 8" />
+                <img src="gambar9.jpg" alt="Gambar 9" />
+                <img src="gambar10.jpg" alt="Gambar 10" />
+                <img src="gambar11.jpg" alt="Gambar 11" />
+            </div>
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 SEISMA. Portal Pendidikan. All rights reserved.
+    </footer>
+    <script>
+        // Hamburger menu utama
+        const menuBtn = document.getElementById('menuUtamaBtn');
+        const menuDropdown = document.getElementById('menuUtamaDropdown');
+        document.addEventListener('click', function(e) {
+            if (menuBtn && menuBtn.contains(e.target)) {
+                menuDropdown.classList.toggle('show');
+            } else if (menuDropdown && !menuDropdown.contains(e.target)) {
+                menuDropdown.classList.remove('show');
+            }
+        });
+
+        // Menambahkan class 'page-loaded' setelah konten halaman dimuat
+        window.addEventListener('load', function() {
+            document.body.classList.add('page-loaded');
+        });
+    </script>
+</body>
+</html>
