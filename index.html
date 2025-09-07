@@ -249,13 +249,12 @@
         document.addEventListener('click', function(e) {
             if (menuBtn.contains(e.target)) {
                 menuDropdown.classList.toggle('show');
-                if (window.innerWidth <= 700) {
+                if (window.innerWidth <= 900) {
                     // Toggle all menu items including landingpage
-                    if (navbarUl.style.display === 'flex') {
-                        navbarUl.style.display = 'none';
+                    if (navbarUl.classList.contains('show')) {
+                        navbarUl.classList.remove('show');
                     } else {
-                        navbarUl.style.display = 'flex';
-                        navbarUl.style.flexDirection = 'column';
+                        navbarUl.classList.add('show');
                     }
                 }
             } else if (!menuDropdown.contains(e.target)) {
