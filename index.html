@@ -80,6 +80,7 @@
         .dropdown > a::after {
             content: " ▼";
             font-size: 12px;
+            cursor: pointer;
         }
         .dropdown-menu {
             display: none;
@@ -110,7 +111,7 @@
         }
         .dropdown:hover .dropdown-menu,
         .dropdown:focus-within .dropdown-menu {
-            display: block;
+            display: none;
         }
         /* Hamburger menu */
         .hamburger {
@@ -322,6 +323,12 @@
                     e.preventDefault();
                     dropdown.classList.toggle('open');
                 }
+            } else {
+                // For desktop, toggle dropdown on click of parent menu
+                if(e.target.tagName.toLowerCase() === 'a' && e.target.parentElement.classList.contains('dropdown')) {
+                    e.preventDefault();
+                    dropdown.classList.toggle('open');
+                }
             }
         });
         // Accessibility: allow keyboard toggle for dropdown
@@ -338,4 +345,3 @@
     </script>
 </body>
 </html>
-
