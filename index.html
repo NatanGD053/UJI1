@@ -308,7 +308,7 @@
                 dropdown.classList.remove('open');
             }
         });
-        // Toggle dropdown submenu on mobile
+        // Toggle dropdown submenu on mobile and desktop
         dropdown.addEventListener('click', (e) => {
             if(window.innerWidth <= 900) {
                 // Allow link navigation only if clicking on submenu links, not the parent menu
@@ -327,7 +327,11 @@
                 // For desktop, toggle dropdown on click of parent menu
                 if(e.target.tagName.toLowerCase() === 'a' && e.target.parentElement.classList.contains('dropdown')) {
                     e.preventDefault();
-                    dropdown.classList.toggle('open');
+                    if (dropdown.classList.contains('open')) {
+                        dropdown.classList.remove('open');
+                    } else {
+                        dropdown.classList.add('open');
+                    }
                 }
             }
         });
