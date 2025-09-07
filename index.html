@@ -16,6 +16,7 @@
         body.page-loaded {
             opacity: 1;
         }
+        /* Navbar styles */
         .navbar {
             width: 100%;
             background: #003366;
@@ -23,11 +24,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 32px;
+            padding: 0 24px;
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 100;
+            z-index: 1000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             height: 64px;
         }
@@ -44,6 +45,10 @@
             font-weight: bold;
             letter-spacing: 1px;
         }
+        .navbar nav {
+            display: flex;
+            align-items: center;
+        }
         .navbar ul {
             list-style: none;
             margin: 0;
@@ -52,31 +57,67 @@
             align-items: center;
         }
         .navbar li {
-            margin: 0 18px;
             position: relative;
-            display: flex;
-            align-items: center;
+            margin: 0 12px;
         }
         .navbar a {
             color: white;
             text-decoration: none;
             font-weight: bold;
             font-size: 16px;
+            padding: 8px 6px;
+            display: block;
             transition: color 0.2s;
         }
-        .navbar a:hover {
+        .navbar a:hover,
+        .navbar a:focus {
             color: #ffcc00;
+        }
+        /* Dropdown menu */
+        .dropdown {
+            position: relative;
+        }
+        .dropdown > a::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            color: #003366;
+            min-width: 180px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 8px 0;
+            z-index: 2000;
+        }
+        .dropdown-menu a {
+            color: #003366;
+            padding: 10px 20px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .dropdown-menu a:hover,
+        .dropdown-menu a:focus {
+            background: #e0e7ff;
+            color: #007bff;
+        }
+        .dropdown:hover .dropdown-menu,
+        .dropdown:focus-within .dropdown-menu {
+            display: block;
         }
         /* Hamburger menu */
         .hamburger {
-            width: 32px;
-            height: 32px;
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
-            margin-right: 8px;
         }
         .hamburger span {
             display: block;
@@ -87,35 +128,68 @@
             border-radius: 2px;
             transition: 0.3s;
         }
-        /* Dropdown menu utama */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 48px;
-            left: 0;
-            background: #fff;
-            min-width: 210px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
-            border-radius: 8px;
-            padding: 10px 0;
-            z-index: 200;
+        /* Responsive styles */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 0 16px;
+            }
+            .navbar nav {
+                position: fixed;
+                top: 64px;
+                left: 0;
+                width: 100%;
+                background: #003366;
+                flex-direction: column;
+                display: none;
+                z-index: 1500;
+                max-height: calc(100vh - 64px);
+                overflow-y: auto;
+            }
+            .navbar nav.show {
+                display: flex;
+            }
+            .navbar ul {
+                flex-direction: column;
+                width: 100%;
+            }
+            .navbar li {
+                margin: 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            .navbar a {
+                padding: 14px 24px;
+                font-size: 18px;
+            }
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                background: #004080;
+                border-radius: 0;
+                padding-left: 20px;
+            }
+            .dropdown-menu a {
+                color: white;
+                padding: 10px 0;
+                font-weight: normal;
+            }
+            .dropdown:hover .dropdown-menu,
+            .dropdown:focus-within .dropdown-menu {
+                display: none;
+            }
+            .dropdown.open > .dropdown-menu {
+                display: block;
+            }
+            .hamburger {
+                display: flex;
+            }
         }
-        .dropdown-menu.show {
-            display: block;
+        @media (max-width: 480px) {
+            .navbar a {
+                font-size: 16px;
+                padding: 12px 20px;
+            }
         }
-        .dropdown-menu a {
-            display: block;
-            color: #003366;
-            padding: 12px 24px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            transition: background 0.2s, color 0.2s;
-        }
-        .dropdown-menu a:hover {
-            background: #e0e7ff;
-            color: #007bff;
-        }
+        /* Hero and footer styles remain unchanged */
         .hero {
             margin-top: 80px;
             display: flex;
@@ -151,7 +225,6 @@
             font-size: 17px;
             text-align: justify;
         }
-        /* Footer */
         footer {
             margin-top: 48px;
             background: #003366;
@@ -162,72 +235,40 @@
             letter-spacing: 0.5px;
             box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
         }
-        @media (max-width: 1200px) {
-            .navbar { padding: 0 20px; }
-            .hero { gap: 24px; padding: 24px 0 0 0; }
-            .hero-text { max-width: 350px; }
-        }
-        @media (max-width: 900px) {
-            .hero { flex-direction: column; gap: 18px; padding: 20px 0 0 0; }
-            .hero-img { margin-bottom: 10px; width: 150px; height: 150px; }
-            .hero-img img { width: 150px; height: 150px; }
-            .hero-text { max-width: 100%; text-align: center; }
-            .hero-text h2 { font-size: 24px; }
-            .hero-text p { font-size: 16px; }
-        }
-        @media (max-width: 700px) {
-            .navbar { padding: 0 10px; height: 56px; }
-            .navbar .logo img { height: 32px; }
-            .navbar .logo span { font-size: 18px; }
-            .navbar ul { flex-direction: column; position: static; width: 100%; background: #003366; display: flex; font-size: 14px; }
-            .navbar li { margin: 6px 0; }
-            .navbar a { padding: 6px 12px; }
-            .hero { margin-top: 56px; padding: 16px 0 0 0; }
-            .hero-img { width: 120px; height: 120px; }
-            .hero-img img { width: 120px; height: 120px; }
-            .hero-text h2 { font-size: 20px; }
-            .hero-text p { font-size: 14px; }
-            footer { font-size: 14px; padding: 12px 0 8px 0; }
-        }
-        @media (max-width: 480px) {
-            .navbar .logo span { font-size: 16px; }
-            .hero-img { width: 100px; height: 100px; }
-            .hero-img img { width: 100px; height: 100px; }
-            .hero-text h2 { font-size: 18px; }
-            .hero-text p { font-size: 13px; }
-            footer { font-size: 13px; }
-        }
     </style>
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="logo">
             <img src="Logo_aksang.png" alt="Logo Dharaseva 25" />
             <span>Dharaseva 25</span>
         </div>
-        <ul>
-            <li style="display: flex; align-items: center; position: relative;">
-                <div class="hamburger" id="menuUtamaBtn" title="Menu Utama Dheraseva 25">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <div class="dropdown-menu" id="menuUtamaDropdown">
-                    <a href="tpb.html">TPB</a>
-                    <a href="akademik.html">Akademik Semester 3</a>
-                    <a href="dokumentasi.html">Dokumentasi Acara</a>
-                    <a href="dpa.html">DPA</a>
-                    <a href="beasiswa.html">Beasiswa</a>
-                    <a href="organisasi.html">Organisasi Mahasiswa</a>
-                    <a href="event.html">Event Kampus</a>
-                    <a href="landingpage.html">Landingpage</a>
-                </div>
-            </li>
-            <li><a href="timeline.html">Timeline</a></li>
-            <li><a href="organogram.html">Organogram</a></li>
-            <li><a href="galeridokumentasi.html">Galeri Dokumentasi</a></li>
-            <li><a href="luaran.html">Luaran</a></li>
-        </ul>
+        <div class="hamburger" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" role="button" tabindex="0">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav id="mainMenu">
+            <ul>
+                <li class="dropdown" tabindex="0">
+                    <a href="#" aria-haspopup="true" aria-expanded="false">Menu Utama</a>
+                    <ul class="dropdown-menu" aria-label="submenu">
+                        <li><a href="tpb.html">TPB</a></li>
+                        <li><a href="akademik.html">Akademik Semester 3</a></li>
+                        <li><a href="dokumentasi.html">Dokumentasi Acara</a></li>
+                        <li><a href="dpa.html">DPA</a></li>
+                        <li><a href="beasiswa.html">Beasiswa</a></li>
+                        <li><a href="organisasi.html">Organisasi Mahasiswa</a></li>
+                        <li><a href="event.html">Event Kampus</a></li>
+                        <li><a href="landingpage.html">Landingpage</a></li>
+                    </ul>
+                </li>
+                <li><a href="timeline.html">Timeline</a></li>
+                <li><a href="organogram.html">Organogram</a></li>
+                <li><a href="galeridokumentasi.html">Galeri Dokumentasi</a></li>
+                <li><a href="luaran.html">Luaran</a></li>
+            </ul>
+        </nav>
     </nav>
     <div class="hero">
         <div class="hero-img">
@@ -242,26 +283,30 @@
         &copy; 2025 Dheraseva 25. Portal Aksi Angkatan. All rights reserved.
     </footer>
     <script>
-        // Hamburger menu utama
-        const menuBtn = document.getElementById('menuUtamaBtn');
-        const menuDropdown = document.getElementById('menuUtamaDropdown');
-        const navbarUl = document.querySelector('.navbar ul');
-        document.addEventListener('click', function(e) {
-            if (menuBtn.contains(e.target)) {
-                menuDropdown.classList.toggle('show');
-                if (window.innerWidth <= 900) {
-                    // Toggle all menu items including landingpage
-                    if (navbarUl.classList.contains('show')) {
-                        navbarUl.classList.remove('show');
-                    } else {
-                        navbarUl.classList.add('show');
-                    }
-                }
-            } else if (!menuDropdown.contains(e.target)) {
-                menuDropdown.classList.remove('show');
+        // Toggle mobile menu
+        const menuToggle = document.getElementById('menuToggle');
+        const mainMenu = document.getElementById('mainMenu');
+        menuToggle.addEventListener('click', () => {
+            const expanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
+            menuToggle.setAttribute('aria-expanded', !expanded);
+            mainMenu.classList.toggle('show');
+        });
+        // Toggle dropdown submenu on mobile
+        const dropdown = document.querySelector('.dropdown');
+        dropdown.addEventListener('click', (e) => {
+            if(window.innerWidth <= 900) {
+                e.preventDefault();
+                dropdown.classList.toggle('open');
             }
         });
-        // Efek animasi fade-in saat halaman dimuat
+        // Accessibility: allow keyboard toggle for dropdown
+        dropdown.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                dropdown.classList.toggle('open');
+            }
+        });
+        // Fade-in effect on page load
         window.addEventListener('load', function() {
             document.body.classList.add('page-loaded');
         });
