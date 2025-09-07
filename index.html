@@ -179,7 +179,7 @@
             .navbar { padding: 0 10px; height: 56px; }
             .navbar .logo img { height: 32px; }
             .navbar .logo span { font-size: 18px; }
-            .navbar ul { flex-direction: column; position: absolute; top: 56px; left: 0; width: 100%; background: #003366; display: none; }
+            .navbar ul { flex-direction: column; position: static; width: 100%; background: #003366; display: flex; }
             .navbar li { margin: 8px 0; }
             .hero { margin-top: 56px; padding: 16px 0 0 0; }
             .hero-img { width: 120px; height: 120px; }
@@ -249,7 +249,12 @@
             if (menuBtn.contains(e.target)) {
                 menuDropdown.classList.toggle('show');
                 if (window.innerWidth <= 700) {
-                    navbarUl.style.display = navbarUl.style.display === 'flex' ? 'none' : 'flex';
+                    if (navbarUl.style.display === 'flex') {
+                        navbarUl.style.display = 'none';
+                    } else {
+                        navbarUl.style.display = 'flex';
+                        navbarUl.style.flexDirection = 'column';
+                    }
                 }
             } else if (!menuDropdown.contains(e.target)) {
                 menuDropdown.classList.remove('show');
