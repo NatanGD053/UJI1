@@ -286,13 +286,21 @@
         // Toggle mobile menu
         const menuToggle = document.getElementById('menuToggle');
         const mainMenu = document.getElementById('mainMenu');
+        const dropdown = document.querySelector('.dropdown');
+        // Initially close dropdown submenu
+        dropdown.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        mainMenu.classList.remove('show');
         menuToggle.addEventListener('click', () => {
             const expanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
             menuToggle.setAttribute('aria-expanded', !expanded);
             mainMenu.classList.toggle('show');
+            // Close dropdown submenu when main menu toggled closed
+            if (expanded) {
+                dropdown.classList.remove('open');
+            }
         });
         // Toggle dropdown submenu on mobile
-        const dropdown = document.querySelector('.dropdown');
         dropdown.addEventListener('click', (e) => {
             if(window.innerWidth <= 900) {
                 e.preventDefault();
