@@ -80,6 +80,7 @@
         .dropdown > a::after {
             content: " ▼";
             font-size: 12px;
+            cursor: pointer;
         }
         .dropdown-menu {
             display: none;
@@ -102,14 +103,14 @@
             font-weight: 500;
             font-size: 15px;
             white-space: nowrap;
+            text-align: left;
         }
         .dropdown-menu a:hover,
         .dropdown-menu a:focus {
             background: #e0e7ff;
             color: #007bff;
         }
-        .dropdown:hover .dropdown-menu,
-        .dropdown:focus-within .dropdown-menu {
+        .dropdown.open > .dropdown-menu {
             display: block;
         }
         /* Hamburger menu */
@@ -298,6 +299,12 @@
         dropdown.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
         mainMenu.classList.remove('show');
+
+        // Ensure dropdown menu is hidden on page load to prevent showing centered text menu
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        if (dropdownMenu) {
+            dropdownMenu.style.display = 'none';
+        }
         menuToggle.addEventListener('click', () => {
             const expanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
             menuToggle.setAttribute('aria-expanded', !expanded);
@@ -307,7 +314,7 @@
                 dropdown.classList.remove('open');
             }
         });
-        // Toggle dropdown submenu on mobile
+        // Toggle dropdown submenu on mobile and desktop
         dropdown.addEventListener('click', (e) => {
             if(window.innerWidth <= 900) {
                 // Allow link navigation only if clicking on submenu links, not the parent menu
@@ -322,8 +329,28 @@
                     e.preventDefault();
                     dropdown.classList.toggle('open');
                 }
+            } else {
+                // For desktop, toggle dropdown on click of parent menu
+                if(e.target.tagName.toLowerCase() === 'a' && e.target.parentElement.classList.contains('dropdown')) {
+                    e.preventDefault();
+                    if (dropdown.classList.contains('open')) {
+                        dropdown.classList.remove('open');
+                    } else {
+                        // Close any other open dropdowns first
+                        const openDropdowns = document.querySelectorAll('.dropdown.open');
+                        openDropdowns.forEach(d => {
+                            if (d !== dropdown) {
+                                d.classList.remove('open');
+                            }
+                        });
+                        dropdown.classList.add('open');
+                    }
+                }
             }
         });
+        // Remove any duplicate dropdown menus that might cause centered text
+        const duplicateDropdowns = document.querySelectorAll('.dropdown-menu.duplicate');
+        duplicateDropdowns.forEach(dd => dd.remove());
         // Accessibility: allow keyboard toggle for dropdown
         dropdown.addEventListener('keydown', (e) => {
             if(e.key === 'Enter' || e.key === ' ') {
