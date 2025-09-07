@@ -250,6 +250,7 @@
             if (menuBtn.contains(e.target)) {
                 menuDropdown.classList.toggle('show');
                 if (window.innerWidth <= 700) {
+                    // Toggle all menu items including landingpage
                     if (navbarUl.style.display === 'flex') {
                         navbarUl.style.display = 'none';
                     } else {
